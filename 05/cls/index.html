@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Js Base Course - Занятие 5</title>
-  <link rel="stylesheet" href="https://rawgit.com/mikemiles86/reveal-line-numbers/master/line-numbers.css">
+  <link rel="stylesheet" href="https://raw.githack.com/mikemiles86/reveal-line-numbers/master/line-numbers.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.11.0/styles/vs.min.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/reveal.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.5.0/css/theme/white.css" id="theme">
@@ -14,126 +14,328 @@
   <div class="reveal">
     <div class="slides">
       <section>
+        <h1>Вопросы?</h1>
+      </section>
+      <section>
+        <h1>
+          <a href="https://raw.githack.com/vvscode/js--base-course/master/questions/index.html" onclick="window.open('https://raw.githack.com/vvscode/js--base-course/master/questions/index.html'); return false;"
+            target="_blank">Вопросы!</a>
+        </h1>
+      </section>
+      <section>
         <h1>Занятие 5</h1>
       </section>
       <section>
-        <h3>Использование сторонних библиотек</h3>
-        <ul>
-          <li class="fragment">Имею namespace или доступны как модуль</li>
-          <li class="fragment">Подключаются в сборку или через <a href="https://cdnjs.com/" target="_blank">CDN</a></li>
-          <li class="fragment">Иногда имеют модульную струтуру и поддержку нестандартных сборок</li>
-        </ul>
-      </section>
-      <section>
-        <h2>Основные библиотеки</h2>
-      </section>
-      <section>
-        <h3>
-          <a href="http://jquery.com" target="_blank">JQuery</a> / <a href="http://zeptojs.com/" target="_blank">Zepto</a></h3>
+        <h2>Шаблонизатор</h2>
+        <section>Принимает описание представления данных и сами данные и возвращает представление</section>
         <section>
-          Основные разделы библиотеки:
-          <ul style="font-size: smaller;">
-            <li class="fragment">Выборка элементов ( расширенные селекторы ) / манипуляция DOM</li>
-            <li class="fragment">Работа с атрибутами / значениями / CSS / размерами элементов</li>
-            <li class="fragment">AJAX</li>
-            <li class="fragment">Работа с событиями / Promises</li>
-            <li class="fragment">Работа с событиями ( подписа / отписка / тригеринг )</li>
-            <li class="fragment">Анимации<sup>*</sup></li>
-          </ul>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+var data = {
+  name: 'Bob',
+  age: 33,
+  props: {
+    sex: 'male',
+    email: 'bob@male.ru'
+  }
+}
+          </code></pre>
         </section>
         <section>
-          Выделяется:
-          <ul>
-            <li>Расширяемость ( много плагинов )</li>
-            <li>Решение проблем кроссбраузерности</li>
-            <li>Большое число примеров кода / решения</li>
-            <li>Не изменяет стандартные объекты</li>
-            <li>Null-object паттерн</li>
-          </ul>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+    var template = `
+    <div>
+      <h1>{{name}}: {{age}}</h1>
+      <a href="mailto:{{props.email}}" class="e-mail-link {{props.sex}}"></a>
+    </div>
+    `;
+              </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="html line-numbers" style="font-size: medium;">
+                <div>
+                    <h1>Bob: 33</h1>
+                    <a href="mailto:bob@male.ru" class="e-mail-link male"></a>
+                  </div>
+                </code></pre>
         </section>
       </section>
       <section>
-        <h3>
-          <a href="http://underscorejs.ru/" target="_blank">Underscore</a> / <a href="https://lodash.com/" target="_blank">Lodash</a></h3>
+        <h1>Вопросы?</h1>
+      </section>
+      <section>
+        <h2>Observer / Event Emitter</h2>
         <section>
-          Основные разделы библиотеки:
-          <ul>
-            <li class="fragment">Работа с коллекциями/массивами</li>
-            <li class="fragment">Работа с функциями (изменение контекста/работа с аргументами ...)</li>
-            <li class="fragment">Работа с объектами ( выборка свойств, расширение и тп)</li>
-            <li class="fragment">Дополнения для строк и чисел</li>
-            <li class="fragment">Шаблонизатор и утилиты</li>
-          </ul>
+          <p class="fragment" style="font-size:smaller; text-align: left;">
+            <strong>Наблюдатель</strong> — поведенческий шаблон проектирования. Создает механизм у класса, который позволяет получать
+            экземпляру объекта этого класса оповещения от других объектов об изменении их состояния, тем самым наблюдая за
+            ними.
+          </p>
+        </section>
+        <section>
+          <img style="width: 60%; height: 60%; border: none;" src="https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/images/Observer_UML.png"
+            alt="Observer - Диаграмма">
+        </section>
+        <section>
+          <p style="font-size: medium; text-align: left">Данный шаблон часто применяют в ситуациях, в которых отправителя сообщений не интересует, что делают получатели
+            с предоставленной им информацией.</p>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers">
+IObservable {
+  addObserver(event, handler)
+  removeObserver(event, handler)
+  notifyObserver(event, data)
+}
+            </code></pre>
+        </section>
+        <section>
+          <a href="https://developer.mozilla.org/en-US/docs/Web/API/EventTarget" target="_blank">EventTarget</a>
+          <pre><code data-trim class="javascript line-numbers">
+EventTarget {
+  addEventListener(event, handler)
+  removeEventListener(event, handler)
+  dispatchEvent(event)
+}
+            </code></pre>
+        </section>
+        <section>
+          <img style="width:50%; height:50%; border: none;" src="https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/images/SimpleEventEmitter.png"
+          />
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+              function ButtonsComponent(eventTarget, element) {
+                document.querySelector(element).addEventListener('click', (ev) => {
+                  if (!ev.target.matches('button')) {
+                    return;
+                  }
+                  eventTarget.trigger('anyString', ev.target.innerHTML);
+                });
+              }
+                          </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+              function InfoComponent(eventTarget, element) {
+                var infoBlock = document.querySelector(element);
+                eventTarget.on('anyString', (data) => infoBlock.innerHTML = data);
+              }
+                            </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+              var eventTarget = new EventTarget();
+              var buttonsComponent = new ButtonsComponent(eventTarget, '.buttons');
+              new InfoComponent(eventTarget, '.info');
+
+              var eventTarget2 = new EventTarget();
+              var buttonsComponent2 = new ButtonsComponent(eventTarget2, '.buttons2');
+              new InfoComponent(eventTarget2, '.info2');
+                              </code></pre>
         </section>
       </section>
       <section>
-        <h3>
-          <a href="https://d3js.org/" target="_blank">D3</a> / <a href="http://www.chartjs.org/" target="_blank">Chart.js</a></h3>
+        <h1>Вопросы?</h1>
+      </section>
+      <section>
+        <h4>Посредник / Медиатор</h4>
         <section>
-          Основные разделы библиотеки:
-          <ul>
-            <li class="fragment">Визуализация данных (построение графиков/чартов)</li>
-            <li class="fragment">Анимация</li>
-          </ul>
-          <a href="https://github.com/d3/d3/wiki/Gallery" target="_blank">Примеры</a>
+          <p style="text-align: left; font-size: medium;" class="fragment">
+            <strong>Посредник (англ. Mediator)</strong> — поведенческий шаблон проектирования, обеспечивающий взаимодействие множества
+            объектов, формируя при этом слабую связанность и избавляя объекты от необходимости явно ссылаться друг на друга.</p>
+        </section>
+        <section>
+          <p style="text-align: left; font-size: medium;" class="fragment">
+            <strong>Проблема</strong>
+            <br /> Обеспечить взаимодействие множества объектов, сформировав при этом слабую связанность и избавив объекты от необходимости
+            явно ссылаться друг на друга.</p>
+          <p style="text-align: left; font-size: medium;" class="fragment">
+            <strong>Решение</strong>
+            <br /> Создать объект, инкапсулирующий способ взаимодействия множества объектов.
+          </p>
+          <p style="text-align: left; font-size: medium;" class="fragment">
+            <strong>Преимущества</strong>
+            <br /> Устраняется связанность между "Коллегами", централизуется управление.
+          </p>
+        </section>
+        <section>
+          <p style="text-align: left; font-size: medium;">"Посредник" определяет интерфейс для обмена информацией с объектами "Коллеги", "Конкретный посредник" координирует
+            действия объектов "Коллеги". Каждый класс "Коллеги" знает о своем объекте "Посредник", все "Коллеги" обмениваются
+            информацией только с посредником, при его отсутствии им пришлось бы обмениваться информацией напрямую. "Коллеги"
+            посылают запросы посреднику и получают запросы от него. "Посредник" реализует кооперативное поведение, пересылая
+            каждый запрос одному или нескольким "Коллегам".
+          </p>
+        </section>
+        <section>
+          <img style="width:70%; height:70%; border: none;" src="https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/images/eventbus.jpg"
+          />
         </section>
       </section>
       <section>
-        <h3>
-          <a href="http://backbonejs.ru/" target="_blank">Backbone.js</a></h3>
+        <h4>Event Bus + Observable</h4>
         <section>
-          Основные разделы библиотеки:
-          <ul>
-            <li class="fragment">Роутинг</li>
-            <li class="fragment">MVC составляющие</li>
-            <li class="fragment">Обертка для синхронизации данных</li>
-            <li class="fragment">Событийная модель</li>
-            <li class="fragment">Работа с коллекциями</li>
-          </ul>
+          <img style="width:60%; height:60%; border: none; margin-top: 40px;" src="https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/images/eventbus2.jpg"
+          />
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers">
+IEventBus {
+  on(event, handler)
+  off(event, handler)
+  trigger(event, data)
+
+  once(event, data)
+}
+            </code></pre>
+        </section>
+        <section>
+          <pre style="font-size: small;"><code data-trim class="javascript line-numbers">
+var eventBus = new EventBus();
+
+// module 1
+eventBus
+  .on('city:changed', (cityName) => console.log(`New city: ${cityName}`));
+
+// module 2 
+eventBus
+  .trigger('city:changed', 'Minsk');
+            </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers" style="font-size: medium;">
+                var eventBus = new EventBus();
+                var buttonsComponent = new ButtonsComponent(eventBus, '.buttons');
+                new InfoComponent(eventBus, '.info');
+  
+                new InfoComponent(eventBus1, '.info2');
+                                </code></pre>
+        </section>
+        <section>
+          <button onclick="window.open('https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/dummy-event-bus/index.html'); return false;">Demo</button>
         </section>
       </section>
       <section>
-        <h3>
-          <a href="https://jqueryui.com/" target="_blank">JQuery UI</a></h3>
+        <h1>Вопросы?</h1>
+      </section>
+      <section>
+        <h3>Router</h3>
         <section>
-          Основные разделы библиотеки:
-          <ul>
-            <li class="fragment">Виджеты (календарь/ табы/ меню/ диалоговые окна / слайдеры )</li>
-            <li class="fragment">Эффекты (расширение эффектов jquery)</li>
-            <li class="fragment">Реализация drag-n-drop, resize, сортировки</li>
-          </ul>
+          <p>Обработчик URL - называется
+            <u>роутером</u> (
+            <u>Router</u>)</h6>
+            <quote>Роутер определяет какой код должен выполняться в зависимости от адреса. Логика роутера может быть завязана на
+              параметры.
+            </quote>
+            <ul class="fragment">
+              <li>
+                <a href="https://habrahabr.ru/company/mailru/blog/172333/" target="_blank">Pilot: многофункциональный JavaScript роутер</a>
+              </li>
+              <li>
+                <a href="http://blog.byndyu.ru/2009/09/javascript.html" target="_blank">Роутер на JavaScript</a>
+              </li>
+              <li>
+                <a href="http://krasimirtsonev.com/blog/article/A-modern-JavaScript-router-in-100-lines-history-api-pushState-hash-url" target="_blank">A modern JavaScript router in 100 lines</a>
+              </li>
+              <li>
+                <a href="https://github.com/krasimir/navigo" target="_blank">A simple minimalistic JavaScript router with a fallback for older browsers.</a>
+              </li>
+              <li>
+                <a href="https://github.com/tildeio/router.js/" target="_blank">router.js</a>
+              </li>
+            </ul>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers">
+IRoute {
+  [name]
+  [match]
+  onEnter([data])
+  onLeave([data])
+
+  onBeforeEnter([data])
+}
+            </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript">
+/* match */ String | RegExp | function
+            </code></pre>
+        </section>
+        <section>
+          <pre style="font-size: small;"><code data-trim class="javascript">
+          Router = {
+            routes: [
+              {
+                name: 'index',
+                match: '',
+                onBeforeEnter: () => console.log('onBeforeEnter index'),
+                onEnter: () => console.log('onEnter index'),
+                onLeave: () => console.log('onLeave index')
+              },
+              {
+                name: 'city',
+                match: /city=(.+)/,
+                onBeforeEnter: (city) => console.log(`onBeforeEnter city:${city}`),
+                onEnter: (city) => console.log(`onEnter city:${city}`),
+                onLeave: (city) => console.log(`onLeave city:${city}`)
+              },
+              {
+                name: 'about',
+                match: (text) => text === 'about',
+                onBeforeEnter: () => console.log(`onBeforeEnter about`),
+                onEnter: () => console.log(`onEnter about`),
+                onLeave: () => console.log(`onLeave about`)
+              }
+            ]
+          }
+</code></pre>
+        </section>
+        <section>
+          <button onclick="window.open('https://raw.githack.com/vvscode/js--base-course/it-academy--end-of-course-1/04/cls/router/index.html');">Demo</button>
+        </section>
+        <section>
+          <pre style="font-size: small;"><code data-trim class="javascript">
+// Зашел на главную
+// onBeforeEnter index
+// onEnter index
+</code></pre>
+          <pre style="font-size: small;" class="fragment"><code data-trim class="javascript">
+// Ввел адрес в форму
+// onLeave index
+// onBeforeEnter city:Minsk
+// onEnter city:Minsk
+</code></pre>
+          <pre style="font-size: small;" class="fragment"><code data-trim class="javascript">
+// About
+// onLeave city:Minsk
+// onBeforeEnter about
+// onEnter about
+</code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers">
+IRouter {
+  add(route[, force])
+  remove(route)
+  removeByName(name)
+
+  go(name, params)
+}
+            </code></pre>
+        </section>
+        <section>
+          <pre><code data-trim class="javascript line-numbers">
+IRouter2 {
+  on(match, handler)
+}
+            </code></pre>
         </section>
       </section>
       <section>
-        <h3>UI Toolkits</h3>
-        <section>
-          <ul>
-            <li><a href="http://examples.sencha.com/extjs/6.5.0/examples" target="_blank">ExtJs</a></li>
-            <li><a href="https://webix.com/" target="_blank">Webix</a></li>
-            <li><a href="http://www.telerik.com/kendo-ui" target="_blank">Kendo UI</a></li>
-            <li><a href="http://www.qooxdoo.org/" target="_blank">qooxdoo</a></li>
-          </ul>
-        </section>
-        <section>
-          Особенности:
-          <ul>
-            <li class="fragment">Внешний вид "под десктоп"</li>
-            <li class="fragment">Своя объектная/компонентная модель</li>
-            <li class="fragment">Не рады работе с DOM</li>
-            <li class="fragment">Задают структуру приложения</li>
-          </ul>
-        </section>
+        <h1>Вопросы?</h1>
       </section>
       <section>
-        <h3>Фреймворки <sup>*</sup></h3>
-        <ul>
-          <li class="fragment"><a href="https://angularjs.org/" target="_blank">Angular</a></li>
-          <li class="fragment"><a href="https://www.meteor.com/" target="_blank">Meteor</a></li>
-          <li class="fragment"><a href="https://facebook.github.io/react/" target="_blank">React</a></li>
-          <li class="fragment"><a href="https://www.polymer-project.org/" target="_blank">Polimer</a></li>
-          <li class="fragment"><a href="https://emberjs.com/" target="_blank">Ember</a></li>
-          <li class="fragment"><a href="https://ru.vuejs.org/" target="_blank">Vue</a></li>
-        </ul>
+        <h1>Домашнее задание ))</h1>
       </section>
     </div>
   </div>
@@ -273,7 +475,7 @@
           async: true
         },
         {
-          src: 'https://rawgit.com/mikemiles86/reveal-line-numbers/master/line-numbers.js'
+          src: 'https://raw.githack.com/mikemiles86/reveal-line-numbers/master/line-numbers.js'
         },
       ]
     });
